@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleShip_ClientUI
+namespace BattleShip_TestCommand
 {
     class GlobalVar
     {
-        private static SocketClient _sockC;
         private static DataProtocol _dP;
-        private static GameController _Gc;
+        private static SocketClient _sockC;
         private static string _IP;
 
         public static string IP
@@ -22,19 +21,13 @@ namespace BattleShip_ClientUI
         public static SocketClient sockC
         {
             get { return _sockC; }
-            set { _sockC = value; } 
+            set { _sockC = value; }
         }
 
         public static DataProtocol dP
         {
             get { return _dP; }
             set { _dP = value; }
-        }
-
-        public static GameController Gc
-        {
-            get { return _Gc; }
-            set { _Gc = value; }
         }
     }
 }

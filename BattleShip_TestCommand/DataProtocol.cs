@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleShip_ServerBackEnd
+namespace BattleShip_TestCommand
 {
     class DataProtocol
     {
@@ -12,6 +12,7 @@ namespace BattleShip_ServerBackEnd
         // 1 byte Command
         // 1 byte X
         // 1 byte Y
+        // 1 byte dim
         // 10 bytes backup
 
         const Byte
@@ -23,10 +24,10 @@ namespace BattleShip_ServerBackEnd
         public const Byte Vertical = 1, // dọc
                     Horizontal = 2; // ngang
 
-        Byte OwnID;
-        Byte Command;
-        Byte X;
-        Byte Y;
+        public Byte OwnID;
+        public Byte Command;
+        public Byte X;
+        public Byte Y;
         public Byte Dim;
 
         private Byte[] _buffer = new Byte[1024];
@@ -58,7 +59,7 @@ namespace BattleShip_ServerBackEnd
 
         public void Send()
         {
-            GlobalVar.sS.SendAllInBuffer(_buffer);
+            GlobalVar.sockC._Send(_buffer);
         }
 
         public String translate()
@@ -67,34 +68,6 @@ namespace BattleShip_ServerBackEnd
             temp = "ID = " + OwnID + " Command = " + Command + " x,y = " + X + "," + Y
                 + " Dim = " + Dim;
             return temp;
-        }
-
-        public int processData()
-        {
-            switch (Command)
-            {
-                case Fire:
-                    GlobalVar.gC.fire(OwnID, X, Y);
-                    break;
-                case PutShip1:
-                    GlobalVar.gC.put(OwnID, X, Y, Dim, 3);
-                    break;
-                case PutShip2:
-                    GlobalVar.gC.put(OwnID, X, Y, Dim, 4);
-                    break;
-                case PutShip3:
-                    GlobalVar.gC.put(OwnID, X, Y, Dim, 5);
-                    break;
-                default:
-                    Console.WriteLine("Command is not in list!");
-                    break;
-            };
-            return 0;
-        }
-
-        public void SetOwnID(Byte ID)
-        {
-            OwnID = ID;
         }
     }
 }

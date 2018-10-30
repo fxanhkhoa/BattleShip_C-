@@ -20,10 +20,15 @@ namespace BattleShip_ClientUI
             PutShip2 = 3,
             PutShip3 = 4;
 
-        public const Byte Vertical = 1, // dọc
-                    Horizontal = 2; // ngang
+        public const Byte Vertical = 2, // dọc
+                    Horizontal = 1; // ngang
 
-        Byte OwnID;
+        public const Byte
+            Ship1Square = 3,
+            Ship2Squares = 4,
+            Ship3Squares = 5;
+
+        public Byte OwnID;
         Byte Command;
         Byte X;
         Byte Y;
@@ -54,6 +59,7 @@ namespace BattleShip_ClientUI
             X = _buffer[2];
             Y = _buffer[3];
             Dim = _buffer[4];
+            Console.Write(OwnID.ToString(), Command.ToString(), X.ToString(), Y.ToString(), Dim.ToString());
         }
 
         public void Send()
@@ -67,6 +73,33 @@ namespace BattleShip_ClientUI
             temp = "ID = " + OwnID + " Command = " + Command + " x,y = " + X + "," + Y
                 + " Dim = " + Dim;
             return temp;
+        }
+
+        public void setBuffer(Byte[] data)
+        {
+            _buffer = data;
+        }
+
+        public void processData()
+        {
+            switch (Command)
+            {
+                case Fire:
+                    GlobalVar.Gc.fire(OwnID, X, Y, Dim);
+                    break;
+                case PutShip1:
+                    GlobalVar.Gc.put(OwnID, X, Y, Dim, Ship1Square);
+                    break;
+                case PutShip2:
+                    GlobalVar.Gc.put(OwnID, X, Y, Dim, Ship2Squares);
+                    break;
+                case PutShip3:
+                    GlobalVar.Gc.put(OwnID, X, Y, Dim, Ship3Squares);
+                    break;
+                default:
+                    Console.WriteLine("Command is not in list");
+                    break;
+            };
         }
     }
 }

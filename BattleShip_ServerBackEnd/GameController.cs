@@ -50,11 +50,13 @@ namespace BattleShip_ServerBackEnd
                 {
                     case 0:
                         Team2[x, y] = 1;
+                        GlobalVar.dP.Dim = 1;
                         break;
                     case 3:
                     case 4:
                     case 5:
                         Team2[x, y] = 2;
+                        GlobalVar.dP.Dim = 2;
                         break;
                     default:
                         break;
@@ -83,7 +85,7 @@ namespace BattleShip_ServerBackEnd
                             Team1[x + 1, y] = 4;
                         }
                         break;
-                    case 5:
+                    case 5: // 3 square
                         if (dim == DataProtocol.Vertical)
                         {
                             Team1[x, y] = 5;
@@ -133,6 +135,26 @@ namespace BattleShip_ServerBackEnd
                         }
                         break;
                 };
+            }
+
+            Console.WriteLine("team1");
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Console.Write(Team1[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Team 2");
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    Console.Write(Team2[i, j] + " ");
+                }
+                Console.WriteLine();
             }
         }
 

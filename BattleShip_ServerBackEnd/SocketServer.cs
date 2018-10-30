@@ -67,6 +67,7 @@ namespace BattleShip_ServerBackEnd
         {
             Socket handler = listener.EndAccept(ar);
             listClient.Add(new SocketClientData(handler));
+            fMain.Invoke(new Action(() => fMain.data = handler.RemoteEndPoint.ToString()));
             handler.BeginReceive(buffer, 0, BufferSize, SocketFlags.None, new AsyncCallback(ReadCallback), handler);
             listener.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -81,18 +82,19 @@ namespace BattleShip_ServerBackEnd
                 {
                     // Read data from the client socket.   
                     bytesRead = handler.EndReceive(ar);
+                    //fMain.Invoke(new Action(() => fMain.data = bytesRead.ToString() + handler.RemoteEndPoint.ToString()));
                 }
                 catch (Exception ex)
                 {
                     // Client closed
-                    foreach (SocketClientData scd in listClient)
-                    {
-                        if (scd._socket.RemoteEndPoint.ToString().Equals(handler.RemoteEndPoint.ToString()))
-                        {
-                            listClient.Remove(scd);
-                            break;
-                        }
-                    }
+                    //foreach (SocketClientData scd in listClient)
+                    //{
+                    //    if (scd._socket.RemoteEndPoint.ToString().Equals(handler.RemoteEndPoint.ToString()))
+                    //    {
+                    //        listClient.Remove(scd);
+                    //        break;
+                    //    }
+                    //}
                     return;
                 }
                 if (bytesRead > 0)
@@ -102,11 +104,19 @@ namespace BattleShip_ServerBackEnd
                     string text = Encoding.ASCII.GetString(dataBuf);
 
                     //
-                    GlobalVar.dP.buffer = dataBuf;
+                    GlobalVar.dP.buffer = dataBuf; // Separate in this function too
                     fMain.Invoke(new Action(() => fMain.data = text));
 
                     String reponse = "received";
                     Send(handler, reponse);
+
+                    // Process data received
+                    GlobalVar.dP.processData();
+
+                    // Send to Client UI
+                    GlobalVar.dP.SetOwnID(69);
+                    //GlobalVar.dP.BuildBuffer();
+                    GlobalVar.dP.Send();
                 }
                 else
                 {
@@ -128,7 +138,7 @@ namespace BattleShip_ServerBackEnd
         {
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
-
+            //fMain.Invoke(new Action(() => fMain.data = handler.RemoteEndPoint.ToString()));
             // Begin sending the data to the remote device.  
             handler.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), handler);
@@ -138,9 +148,17 @@ namespace BattleShip_ServerBackEnd
 
         public void SendInByte(Socket handler, Byte[] byteData)
         {
-            // Begin sending the data to the remote device. 
-            handler.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), handler);
+            try
+            {
+                // Begin sending the data to the remote device. 
+                handler.BeginSend(byteData, 0, byteData.Length, 0,
+                    new AsyncCallback(SendCallback), handler);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
 
             listener.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
