@@ -145,7 +145,7 @@ namespace BattleShip_ClientUI
                 Socket client = (Socket)ar.AsyncState;
                 // Read data from the remote device.  
                 int bytesRead = client.EndReceive(ar);
-                MessageBox.Show(bytesRead.ToString());
+                //MessageBox.Show(bytesRead.ToString());
 
                 if (bytesRead > 0)
                 {
