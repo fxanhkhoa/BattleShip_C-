@@ -2,6 +2,7 @@ import socket
 import threading
 import socketserver
 import Game
+import Database
 
 number = 65
 
@@ -9,6 +10,8 @@ Fire = 1
 PutShip1 = 2
 PutShip2 = 3
 PutShip3 = 4
+SignUp = 5
+SignIn = 6
 reset = 12
  
 id = 0
@@ -19,6 +22,7 @@ shiptype = 0
 command = 0
 
 gameControl = Game.GameControl()
+database = Database.database()
 
 clients = []
 
@@ -46,7 +50,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                 data = str(buf, 'ascii')
                 print(data)
                 seperate(buf)
-                result = process()
+                result = process(bufArray)
                 cur_thread = threading.current_thread()
                 response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
                 #self.request.sendall(response)
@@ -103,7 +107,7 @@ def seperate(buf):
     print(id,' ', command, ' ', x, ' ', y, ' ', dim)
     return
 
-def process():
+def process(buf):
     global id
     global x
     global y
@@ -123,6 +127,10 @@ def process():
         gameControl.put(id, x, y, dim, 5)
     elif command == reset:
         gameControl = Game.GameControl()
+    elif command == SignUp:
+        database.SignUp(buf)
+    elif command == SignIn:
+        database.SignIn(buf)
     else:
         print('command is not in list')
     return 0
@@ -133,7 +141,7 @@ def main():
     #ownIp = '192.168.0.108'
     print('my ip is: ', ownIp)
     #print ownIp
-    HOST, PORT = ownIp, 8500
+    HOST, PORT = ownIp, 8000
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
     ip, port = server.server_address

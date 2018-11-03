@@ -28,7 +28,7 @@ namespace BattleShip_ClientUI
         const int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         // The port number for the remote device.  
-        private const int port = 8500;
+        private const int port = 8000;
         IPAddress ipAddress;
         IPEndPoint remoteEP;
 

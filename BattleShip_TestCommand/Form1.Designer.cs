@@ -41,6 +41,12 @@
             this.btn_Send = new System.Windows.Forms.Button();
             this.btn_connect = new System.Windows.Forms.Button();
             this.IP = new System.Windows.Forms.TextBox();
+            this.username = new System.Windows.Forms.TextBox();
+            this.passwd = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.SignIn = new System.Windows.Forms.Button();
+            this.SignUp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ID
@@ -150,11 +156,70 @@
             this.IP.Size = new System.Drawing.Size(138, 20);
             this.IP.TabIndex = 4;
             // 
+            // username
+            // 
+            this.username.Location = new System.Drawing.Point(334, 190);
+            this.username.Name = "username";
+            this.username.Size = new System.Drawing.Size(100, 20);
+            this.username.TabIndex = 5;
+            // 
+            // passwd
+            // 
+            this.passwd.Location = new System.Drawing.Point(334, 216);
+            this.passwd.Name = "passwd";
+            this.passwd.PasswordChar = '*';
+            this.passwd.Size = new System.Drawing.Size(100, 20);
+            this.passwd.TabIndex = 5;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(262, 193);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Username";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(264, 219);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Password";
+            // 
+            // SignIn
+            // 
+            this.SignIn.Location = new System.Drawing.Point(265, 256);
+            this.SignIn.Name = "SignIn";
+            this.SignIn.Size = new System.Drawing.Size(75, 23);
+            this.SignIn.TabIndex = 7;
+            this.SignIn.Text = "SignIn";
+            this.SignIn.UseVisualStyleBackColor = true;
+            this.SignIn.Click += new System.EventHandler(this.SignIn_Click);
+            // 
+            // SignUp
+            // 
+            this.SignUp.Location = new System.Drawing.Point(359, 256);
+            this.SignUp.Name = "SignUp";
+            this.SignUp.Size = new System.Drawing.Size(75, 23);
+            this.SignUp.TabIndex = 7;
+            this.SignUp.Text = "SignUp";
+            this.SignUp.UseVisualStyleBackColor = true;
+            this.SignUp.Click += new System.EventHandler(this.SignUp_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 439);
+            this.Controls.Add(this.SignUp);
+            this.Controls.Add(this.SignIn);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.passwd);
+            this.Controls.Add(this.username);
             this.Controls.Add(this.IP);
             this.Controls.Add(this.btn_connect);
             this.Controls.Add(this.btn_Send);
@@ -191,6 +256,12 @@
         private System.Windows.Forms.Button btn_Send;
         private System.Windows.Forms.Button btn_connect;
         private System.Windows.Forms.TextBox IP;
+        private System.Windows.Forms.TextBox username;
+        private System.Windows.Forms.TextBox passwd;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button SignIn;
+        private System.Windows.Forms.Button SignUp;
     }
 }
 

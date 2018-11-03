@@ -39,5 +39,33 @@ namespace BattleShip_TestCommand
             GlobalVar.IP = IP.Text;
             GlobalVar.sockC.StartClient();
         }
+
+        private void SignIn_Click(object sender, EventArgs e)
+        {
+            GlobalVar.dP.OwnID = Convert.ToByte(ID.Text);
+            GlobalVar.dP.Command = 6;
+            GlobalVar.dP.Username = username.Text;
+            GlobalVar.dP.Passwd = passwd.Text;
+            if ((username.Text.Length != 6) || (passwd.Text.Length !=6))
+            {
+                MessageBox.Show("Username and password must be 6 in length");
+                return;
+            }
+            GlobalVar.dP.SignIn();
+        }
+
+        private void SignUp_Click(object sender, EventArgs e)
+        {
+            GlobalVar.dP.OwnID = Convert.ToByte(ID.Text);
+            GlobalVar.dP.Command = 5;
+            GlobalVar.dP.Username = username.Text;
+            GlobalVar.dP.Passwd = passwd.Text;
+            if ((username.Text.Length != 6) || (passwd.Text.Length != 6))
+            {
+                MessageBox.Show("Username and password must be 6 in length");
+                return;
+            }
+            GlobalVar.dP.SignUp();
+        }
     }
 }

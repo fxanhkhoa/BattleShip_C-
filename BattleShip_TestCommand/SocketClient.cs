@@ -25,7 +25,7 @@ namespace BattleShip_TestCommand
     {
         Socket client;
         // The port number for the remote device.  
-        private const int port = 8500;
+        private const int port = 8000;
 
         // ManualResetEvent instances signal completion.  
         private static ManualResetEvent connectDone =

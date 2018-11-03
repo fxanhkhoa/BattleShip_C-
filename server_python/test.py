@@ -1,3 +1,5 @@
+import mysql.connector
+
 team1 = []
 team2 = []
 
@@ -6,3 +8,6 @@ for i in range(0,8):
     team2.append([0,0,0,0,0,0,0,0])
 
 print(team1[1][1])
+
+team = team1[2:4]
+print(team)

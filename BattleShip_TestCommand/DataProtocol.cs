@@ -29,6 +29,8 @@ namespace BattleShip_TestCommand
         public Byte X;
         public Byte Y;
         public Byte Dim;
+        public String Username;
+        public String Passwd;
 
         private Byte[] _buffer = new Byte[1024];
 
@@ -68,6 +70,50 @@ namespace BattleShip_TestCommand
             temp = "ID = " + OwnID + " Command = " + Command + " x,y = " + X + "," + Y
                 + " Dim = " + Dim;
             return temp;
+        }
+
+        public void SignIn()
+        {
+            _buffer[0] = OwnID;
+            _buffer[1] = Command;
+
+            _buffer[2] = Convert.ToByte(Username[0]);
+            _buffer[3] = Convert.ToByte(Username[1]);
+            _buffer[4] = Convert.ToByte(Username[2]);
+            _buffer[5] = Convert.ToByte(Username[3]);
+            _buffer[6] = Convert.ToByte(Username[4]);
+            _buffer[7] = Convert.ToByte(Username[5]);
+
+            _buffer[8] = Convert.ToByte(Passwd[0]);
+            _buffer[9] = Convert.ToByte(Passwd[1]);
+            _buffer[10] = Convert.ToByte(Passwd[2]);
+            _buffer[11] = Convert.ToByte(Passwd[3]);
+            _buffer[12] = Convert.ToByte(Passwd[4]);
+            _buffer[13] = Convert.ToByte(Passwd[5]);
+
+            Send();
+        }
+
+        public void SignUp()
+        {
+            _buffer[0] = OwnID;
+            _buffer[1] = Command;
+
+            _buffer[2] = Convert.ToByte(Username[0]);
+            _buffer[3] = Convert.ToByte(Username[1]);
+            _buffer[4] = Convert.ToByte(Username[2]);
+            _buffer[5] = Convert.ToByte(Username[3]);
+            _buffer[6] = Convert.ToByte(Username[4]);
+            _buffer[7] = Convert.ToByte(Username[5]);
+
+            _buffer[8] = Convert.ToByte(Passwd[0]);
+            _buffer[9] = Convert.ToByte(Passwd[1]);
+            _buffer[10] = Convert.ToByte(Passwd[2]);
+            _buffer[11] = Convert.ToByte(Passwd[3]);
+            _buffer[12] = Convert.ToByte(Passwd[4]);
+            _buffer[13] = Convert.ToByte(Passwd[5]);
+
+            Send();
         }
     }
 }
