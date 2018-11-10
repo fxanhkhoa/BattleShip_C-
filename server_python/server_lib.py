@@ -127,6 +127,7 @@ def process(buf):
         gameControl.put(id, x, y, dim, 5)
     elif command == reset:
         gameControl = Game.GameControl()
+        gameControl.reset(room = 1)
     elif command == SignUp:
         database.SignUp(buf)
     elif command == SignIn:

@@ -10,7 +10,7 @@ class database:
             host="localhost",
             user="root",
             passwd="root",
-	    database="BATTLESHIP"
+            database="BATTLESHIP"
             )
         self.mycursor = self.mydb.cursor()
 
@@ -47,4 +47,26 @@ class database:
                 print(colored('wrong username or password', 'red'))
         except Exception as e:
             print(e)
+          
+    def update_status(self, id_square, value, room = 1):
+        print(id_square, " ", value)
+        sql = "UPDATE GAMESTATUS SET SHIPVALUE = %s WHERE id_square = %s AND ROOM = %s"
+        val = (value, id_square, room)
+        
+        self.mycursor.execute(sql, val)
+
+        self.mydb.commit()
+        
+        print(self.mycursor.rowcount, "record(s) affected")
+        return 1
+     
+    def reset(self, room = 1):
+      sql = "UPDATE GAMESTATUS SET SHIPVALUE = %s WHERE ROOM = %s"
+      val = ('0', room)
+        
+      self.mycursor.execute(sql, val)
+
+      self.mydb.commit()
+      
+      print(self.mycursor.rowcount, "record(s) affected")
 
