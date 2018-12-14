@@ -1,17 +1,21 @@
 import socket
 import threading
 import socketserver
+#import getip
 import Game
 import Database
+import time
 
 number = 65
 
+dump = 0
 Fire = 1
 PutShip1 = 2
 PutShip2 = 3
 PutShip3 = 4
 SignUp = 5
 SignIn = 6
+Select = 7
 reset = 12
  
 id = 0
@@ -21,8 +25,12 @@ dim = 0
 shiptype = 0
 command = 0
 
+step = 0
+
 gameControl = Game.GameControl()
 database = Database.database()
+
+
 
 clients = []
 
@@ -31,6 +39,28 @@ def send_to_all_clients(data):
         request.sendall(data)
     return
 
+class play_time(threading.Thread):
+  def __init__(self, threadID, name, counter):
+      threading.Thread.__init__(self)
+      self.threadID = threadID
+      self.name = name
+      self.counter = counter
+  def run(self):
+      while (True):
+        if (gameControl.step == 3):
+          database.set_time(round(time.time() - gameControl.time, 4))
+          if (time.time() - gameControl.time >= 10):
+            if (gameControl.currentPlayer == 1):
+              gameControl.currentPlayer = 2
+              database.set_turn(2)
+              gameControl.time = time.time()
+              database.set_time(10)
+            elif (gameControl.currentPlayer == 2):
+              gameControl.currentPlayer = 1
+              database.set_turn(1)
+              gameControl.time = time.time()
+              database.set_time(10)    
+    
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
@@ -39,6 +69,9 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         close = 0
         while not close:
             try:
+                
+                  
+                  
                 buf = self.request.recv(1024)
 
                 if (not buf):
@@ -99,12 +132,29 @@ def seperate(buf):
     global shiptype
     global command
     print('seperating')
-    id = buf[0]
-    command = buf[1]
-    x = buf[2]
-    y = buf[3]
-    dim = buf[4]
-    print(id,' ', command, ' ', x, ' ', y, ' ', dim)
+    try:
+      id = buf[0]
+      command = buf[1]
+      if command == 2:
+        print(gameControl.donePutting_player1, gameControl.donePutting_player1)
+        if gameControl.donePutting_player1 == 1 and gameControl.donePutting_player2 == 1:
+          print('----------now fire-----------')
+          command = Fire
+          gameControl.step = 3
+          database.update_step(3)
+        else:
+          if (id == 1):
+            command = command + gameControl.shipPicking_player1
+            gameControl.shipPicking_player1 = gameControl.shipPicking_player1 + 1
+          elif (id == 2):
+            command = command + gameControl.shipPicking_player2
+            gameControl.shipPicking_player2 = gameControl.shipPicking_player2 + 1
+      x = buf[2]
+      y = buf[3]
+      dim = buf[4]
+      print(id,' ', command, ' ', x, ' ', y, ' ', dim)
+    except Exception as e:
+      print('Error', e)
     return
 
 def process(buf):
@@ -117,28 +167,72 @@ def process(buf):
     global gameControl
     print('processing ', command, ' ', PutShip1)
     if command == Fire:
-        result = gameControl.fire(id, x, y)
-        return result
+        ## Check turn
+        print('command: FIRE with id = ', id)
+        print('current player is ', gameControl.currentPlayer)
+        
+        if (id == gameControl.currentPlayer):
+          ## reset timeout
+          gameControl.time = time.time()
+          database.set_time(10)
+          if (id == 1):
+            gameControl.currentPlayer = 2
+            database.set_turn(2)
+          elif (id == 2):
+            gameControl.currentPlayer = 1
+            database.set_turn(1)
+          result = gameControl.fire(id, x, y)
+          return result
     elif command == PutShip1:
         gameControl.put(id, x, y, dim, 3)
     elif command == PutShip2:
         gameControl.put(id, x, y, dim, 4)
     elif command == PutShip3:
-        gameControl.put(id, x, y, dim, 5)
+        done = gameControl.put(id, x, y, dim, 5)
+        if done == 1 and id == 1:
+          gameControl.donePutting_player1 = 1
+          print('player 1 finished putting')
+        elif done == 1 and id == 2:
+          gameControl.donePutting_player2 = 1
+          print('player 2 finished putting')
+          
+        if gameControl.donePutting_player1 == 1 and gameControl.donePutting_player2 == 1:
+          print('----------now fire-----------')
+          gameControl.step = 3
+          database.update_step(3)
+          gameControl.timeoutPlayer = gameControl.currentPlayer
+          gameControl.time = time.time()
+          database.set_time(10)
+          play_thread.start()
     elif command == reset:
         gameControl = Game.GameControl()
         gameControl.reset(room = 1)
     elif command == SignUp:
-        database.SignUp(buf)
+        database.signUp(buf)
     elif command == SignIn:
-        database.SignIn(buf)
+        database.signIn(buf)
+    elif command == Select:
+        database.select(buf, gameControl.step, room = 1)
     else:
         print('command is not in list')
     return 0
+########################    
+    
+    
 
+play_thread = play_time(1, 'play_thread', 1)
+ 
+ 
+######################## 
+
+def get_ip_address():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 
 def main():
-    ownIp = socket.gethostbyname(socket.gethostname())
+    ownIp = get_ip_address()
+    #ownIp = socket.gethostbyname(socket.gethostname())
     #ownIp = '192.168.0.108'
     print('my ip is: ', ownIp)
     #print ownIp

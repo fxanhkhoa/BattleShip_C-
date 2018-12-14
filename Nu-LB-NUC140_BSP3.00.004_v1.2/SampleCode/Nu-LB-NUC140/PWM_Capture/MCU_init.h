@@ -1,0 +1,13 @@
+//Define Clock source
+#define MCU_CLOCK_SOURCE      
+#define MCU_CLOCK_SOURCE_HXT   // HXT, LXT, HIRC, LIRC 
+#define MCU_CLOCK_FREQUENCY     50000000  //Hz
+
+//Define MCU Interfaces
+#define MCU_INTERFACE_PWM1
+#define PWM1_CH01_CLOCK_SOURCE_HXT // HXT, LXT, HCLK, HIRC
+#define PWM1_CH23_CLOCK_SOURCE_HXT // HXT, LXT, HCLK, HIRC
+#define PIN_PWM1_CH0_PB11
+#define PIN_PWM1_CH1_PE5 
+#define PIN_PWM1_CH2_PE0
+#define PIN_PWM1_CH3_PE1 

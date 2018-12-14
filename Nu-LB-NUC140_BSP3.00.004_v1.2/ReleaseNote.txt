@@ -1,0 +1,8 @@
+Nu-LB-NUC140 v1.2 made by Richard Kuo, adjunct assistant professor, EE dept., NTOU.
+
+Based on NUC100_120_BSP3.00.004 BSP,
+the following folders are added for educational use:
+./SampleCode/Nu-LB-NUC140 - learning board sample codes
+./Library/Nu-LB-NUC140    - learning board libraries
+./Library/NuMakerLib      - external module libraries
+
