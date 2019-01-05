@@ -88,7 +88,7 @@ namespace BattleShip_TestCommand
             try
             {
                 // Retrieve the socket from the state object.  
-                //client = (Socket)ar.AsyncState;
+                client = (Socket)ar.AsyncState;
 
                 // Complete the connection.  
                 client.EndConnect(ar);

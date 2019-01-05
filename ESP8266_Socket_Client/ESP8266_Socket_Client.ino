@@ -3,8 +3,8 @@
 
 SoftwareSerial ESPserial(2, 3); // RX | TX
 
-const char* ssid = "UIT Public";
-const char* password = "";
+const char* ssid = "test_";
+const char* password = "12345678";
 
 const uint16_t port = 8000;
 char host[] = "14.186.70.185";
